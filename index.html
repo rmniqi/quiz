@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>서양사 문제 뽑기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#faf7f2;--card:#ffffff;--fg:#23211e;--mute:#6f6a62;--line:#e4ddd0;--acc:#b5432c;--acc-fg:#ffffff;--ok:#2e7d4f;--okbg:#e4f3e9;--bad:#b3261e;--badbg:#fbe6e3;--box:#f3eee4;--chip:#efe9dc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1a18;--card:#252320;--fg:#ece7de;--mute:#a39d92;--line:#3a3732;--acc:#e0765c;--acc-fg:#1b1a18;--ok:#6fcf97;--okbg:#1d3a2a;--bad:#ff8b80;--badbg:#44211e;--box:#2c2a26;--chip:#33302b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1a18;--card:#252320;--fg:#ece7de;--mute:#a39d92;--line:#3a3732;--acc:#e0765c;--acc-fg:#1b1a18;--ok:#6fcf97;--okbg:#1d3a2a;--bad:#ff8b80;--badbg:#44211e;--box:#2c2a26;--chip:#33302b;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.6;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-block:8px 48px}
+.wrap{max-width:720px;margin:0 auto}
+h1{font-size:26px;margin:18px 0 2px;letter-spacing:-.02em;text-wrap:balance}
+.sub{color:var(--mute);margin:0 0 16px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.lab{font-size:13px;font-weight:700;color:var(--mute);letter-spacing:.04em;margin:0 0 8px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(min-width:560px){.seg{grid-template-columns:repeat(6,1fr)}}
+button{font:inherit;color:var(--fg);cursor:pointer}
+.sg{background:var(--chip);border:2px solid transparent;border-radius:10px;padding:10px 4px;font-weight:700;font-size:15px}
+.sg.on{border-color:var(--acc);background:var(--card);color:var(--acc)}
+.desc{margin:10px 0 0;font-size:14px;color:var(--mute);min-height:44px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=number]{font:inherit;width:96px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font-size:18px;font-weight:700;text-align:center}
+.qn{background:var(--chip);border:0;border-radius:999px;padding:7px 14px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--chip);border:2px solid transparent;border-radius:999px;padding:7px 13px;font-size:14px}
+.chip.on{border-color:var(--acc);background:var(--card);font-weight:700}
+.pre{background:none;border:1px dashed var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--mute)}
+.go{width:100%;background:var(--acc);color:var(--acc-fg);border:0;border-radius:12px;padding:14px;font-size:18px;font-weight:700}
+.go2{background:var(--chip);color:var(--fg);border:0;border-radius:12px;padding:12px 14px;font-weight:700;font-size:15px}
+.msg{color:var(--bad);font-size:14px;min-height:20px;margin:8px 0 0}
+details>summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"▾";color:var(--mute)}
+details[open]>summary::after{content:"▴"}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0 10px;margin-bottom:6px}
+.bar .t{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
+.prog{height:6px;background:var(--chip);border-radius:6px;margin-top:6px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--acc);transition:width .2s}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.qh{display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px;color:var(--mute);font-weight:700}
+.badge{background:var(--chip);border-radius:999px;padding:2px 10px;font-size:12px}
+.stem{font-weight:700;margin:0 0 10px;text-wrap:pretty}
+.box{background:var(--box);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px}
+.box div+div{margin-top:6px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:8px;font-size:15.5px;line-height:1.5}
+.opt:disabled{cursor:default;color:var(--fg);opacity:1}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.why{display:none;margin-top:6px;padding:12px;border-radius:10px;background:var(--box);font-size:14.5px}
+.why.show{display:block}
+.why p{margin:0 0 4px}
+.why .h{font-weight:700}
+.h.ok{color:var(--ok)}.h.bad{color:var(--bad)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.sum{font-size:20px;font-weight:700;margin:0 0 4px}
+textarea{width:100%;min-height:200px;font:inherit;font-size:13px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+.note{font-size:13px;color:var(--mute);margin:6px 0 0}
+</style>
+<div class="wrap">
+<h1>서양사 문제 뽑기</h1>
+<p class="sub">4대 문명 → 르네상스 · 누를 때마다 새 문제가 만들어져요</p>
+
+<details class="card" id="set" open>
+<summary>설정 <span class="note" id="sumry" style="font-weight:400;margin:0 8px 0 auto"></span></summary>
+<div style="margin-top:14px">
+<p class="lab">난이도</p>
+<div class="seg" id="seg"></div>
+<p class="desc" id="desc"></p>
+<p class="lab" style="margin-top:14px">문제 개수 (직접 입력)</p>
+<div class="row"><input type="number" id="n" min="1" max="200" value="20" inputmode="numeric"> <span>문제</span>
+<button class="qn" data-n="10">10</button><button class="qn" data-n="20">20</button><button class="qn" data-n="30">30</button><button class="qn" data-n="50">50</button></div>
+<p class="lab" style="margin-top:14px">범위 (눌러서 켜고 끄기)</p>
+<div class="chips" id="chips"></div>
+<div class="row" style="margin-top:10px"><button class="pre" data-p="all">전체</button><button class="pre" data-p="gr">그리스·로마</button><button class="pre" data-p="mid">중세</button><button class="pre" data-p="ren">르네상스</button><button class="pre" data-p="none">모두 해제</button></div>
+<p class="msg" id="msg"></p>
+<div class="row" style="margin-top:6px"><button class="go" id="go">새 문제 뽑기</button></div>
+<div class="row" style="margin-top:8px"><button class="go2" id="more" style="display:none">지금 설정으로 이어서 더 뽑기</button></div>
+</div>
+</details>
+
+<div id="quiz" style="display:none">
+<div class="bar"><div class="t"><span id="b1">푼 문제 0/0</span><span id="b2">정답 0</span></div><div class="prog"><i id="pg"></i></div></div>
+<div id="list"></div>
+<div class="card" id="sumcard">
+<p class="sum" id="sumt"></p>
+<p class="note" id="sumn">풀고 나서 '결과 복사'를 누르고 채팅에 붙여넣으면 오답노트를 만들어 줘요.</p>
+<div class="acts" style="margin-top:12px"><button class="go2" id="cp">결과 복사</button><button class="go2" id="rw">틀린 문제만 다시</button><button class="go2" id="more2">이어서 더 풀기</button></div>
+<div id="outbox" style="display:none"><textarea id="out" readonly></textarea><p class="note" id="cm"></p></div>
+</div>
+</div>
+</div>
+<script>
+var CH=["4대 문명","페르시아","그리스 폴리스·전쟁","그리스 문화·헬레니즘","로마 공화정","로마 제정·크리스트교","게르만·프랑크","비잔티움·동서 교회","봉건제·장원","교황권·십자군","중세 도시·후기","르네상스"];
+// [단원, 옳은 설명, 틀린 설명]
+var ITEMS=[
+[0,"메소포타미아 문명은 티그리스강과 유프라테스강 유역에서 발달했다","메소포타미아 문명은 나일강과 인더스강 유역에서 발달했다"],
+[0,"이집트 문명은 나일강의 정기적인 범람을 바탕으로 발달했다","이집트 문명은 티그리스강의 정기적인 범람을 바탕으로 발달했다"],
+[0,"메소포타미아에서는 쐐기 문자를 점토판에 새겨 사용했다","메소포타미아에서는 상형 문자를 파피루스에 기록해 사용했다"],
+[0,"이집트에서는 상형 문자를 파피루스에 기록했다","이집트에서는 쐐기 문자를 점토판에 새겨 기록했다"],
+[0,"함무라비 법전은 신분에 따라 처벌이 달랐다","함무라비 법전은 신분과 상관없이 처벌이 같았다"],
+[0,"이집트의 파라오는 왕이면서 신으로 숭배되었다","이집트의 파라오는 종교와 무관한 군사 지도자였다"],
+[0,"이집트에서는 내세를 믿어 미라와 피라미드를 만들었다","이집트에서는 현세만 중시해 피라미드를 만들었다"],
+[0,"인더스 문명의 모헨조다로와 하라파는 계획도시였다","인더스 문명의 모헨조다로와 하라파는 피라미드 도시였다"],
+[0,"황허 문명에서는 갑골 문자를 썼고 이것이 한자의 기원이 되었다","황허 문명에서는 쐐기 문자를 썼고 이것이 한자의 기원이 되었다"],
+[0,"이집트는 사막과 바다로 막혀 있어 비교적 안정적으로 발전했다","이집트는 개방된 평지라 외적의 침입이 잦아 왕조가 자주 바뀌었다"],
+[0,"메소포타미아는 개방된 지형이라 여러 민족이 침입해 왕조가 자주 바뀌었다","메소포타미아는 사막으로 막혀 있어 하나의 왕조가 오래 유지되었다"],
+[0,"메소포타미아에서는 태음력을, 이집트에서는 태양력을 만들었다","메소포타미아에서는 태양력을, 이집트에서는 태음력을 만들었다"],
+[1,"페르시아는 분열된 오리엔트를 통일하고 다리우스 1세 때 전성기를 맞았다","페르시아는 분열된 오리엔트를 통일하고 키루스 2세 때 멸망했다"],
+[1,"다리우스 1세는 제국을 여러 속주로 나누고 총독을 보내 다스렸다","다리우스 1세는 제국을 속주로 나누지 않고 왕이 직접 다스렸다"],
+[1,"페르시아는 정복지의 종교와 풍습을 존중하는 관용 정책을 폈다","페르시아는 정복지에 페르시아의 종교와 풍습을 강요했다"],
+[1,"페르시아는 '왕의 길'이라는 도로로 수도와 속주를 연결했다","페르시아는 '왕의 길'이라는 성벽으로 북방 민족을 막았다"],
+[1,"키루스 2세는 페르시아 제국을 세운 왕이다","키루스 2세는 페르시아를 멸망시킨 그리스의 왕이다"],
+[1,"페르시아는 속주마다 정복당한 민족의 자치를 어느 정도 인정했다","페르시아는 속주마다 모든 자치를 없애고 같은 법만 강요했다"],
+[2,"폴리스는 산과 바다로 나뉜 지형 탓에 서로 독립적으로 발달했다","폴리스는 넓은 평야 지형 탓에 하나의 통일 왕국으로 발달했다"],
+[2,"폴리스에는 신전이 있는 아크로폴리스와 시민들이 모이는 아고라가 있었다","폴리스에는 신전이 있는 아고라와 시민들이 모이는 아크로폴리스가 있었다"],
+[2,"아테네는 성인 남성 시민이 민회에 직접 참여하는 민주정을 발전시켰다","아테네는 여성과 노예를 포함한 모든 주민이 민회에 참여했다"],
+[2,"아테네에서 여성, 노예, 외국인은 참정권이 없었다","아테네에서 여성과 외국인은 참정권이 있었고 노예만 없었다"],
+[2,"스파르타는 소수 시민이 많은 예속민을 지배하며 군사 훈련을 중시했다","스파르타는 상공업과 해상 무역을 중시한 민주정 폴리스였다"],
+[2,"아테네는 상공업과 해상 무역이 발달해 문화와 학문이 번성했다","아테네는 군사 훈련만 중시해 학문과 예술을 억눌렀다"],
+[2,"페르시아 전쟁은 아테네 중심의 그리스 폴리스 연합이 승리했다","페르시아 전쟁은 페르시아가 승리해 그리스를 지배했다"],
+[2,"페르시아 전쟁에서 아테네 해군이 살라미스 해전에서 승리했다","페르시아 전쟁에서 스파르타 해군이 마라톤 전투에서 승리했다"],
+[2,"아테네는 델로스 동맹을, 스파르타는 펠로폰네소스 동맹을 이끌었다","아테네는 펠로폰네소스 동맹을, 스파르타는 델로스 동맹을 이끌었다"],
+[2,"페리클레스 시기에 아테네 민주정이 전성기를 맞았다","페리클레스 시기에 아테네 민주정이 폐지되었다"],
+[2,"펠로폰네소스 전쟁은 스파르타 쪽이 승리하고 아테네는 쇠퇴했다","펠로폰네소스 전쟁은 아테네 쪽이 승리하고 스파르타는 쇠퇴했다"],
+[2,"펠로폰네소스 전쟁 뒤 폴리스들은 서로 싸우며 힘이 약해졌다","펠로폰네소스 전쟁 뒤 폴리스들은 하나로 합쳐져 더욱 강해졌다"],
+[2,"그리스인들은 같은 언어와 신화, 올림피아 제전으로 동족 의식을 가졌다","그리스인들은 언어와 종교가 달라 동족 의식이 전혀 없었다"],
+[3,"그리스 신들은 인간의 모습과 감정을 지녔다","그리스 신들은 인간과 전혀 닮지 않은 초월적 존재였다"],
+[3,"호메로스는 트로이 전쟁을 다룬 「일리아스」와 「오디세이」를 남겼다","호메로스는 페르시아 전쟁을 다룬 「역사」를 남겼다"],
+[3,"헤로도토스는 「역사」에서 페르시아 전쟁을 기록했다","헤로도토스는 「역사」에서 펠로폰네소스 전쟁을 기록했다"],
+[3,"투키디데스는 펠로폰네소스 전쟁을 기록했다","투키디데스는 페르시아 전쟁을 기록했다"],
+[3,"파르테논 신전은 아테네의 아크로폴리스에 세워져 조화와 균형미를 보여준다","파르테논 신전은 스파르타의 아크로폴리스에 세워져 거대함을 보여준다"],
+[3,"소크라테스는 '너 자신을 알라'며 대화로 진리를 찾으려 했다","소크라테스는 이데아를 주장하며 아카데메이아를 세웠다"],
+[3,"플라톤은 이데아를 주장하고 아카데메이아를 세웠다","플라톤은 알렉산드로스를 가르친 '만학의 아버지'였다"],
+[3,"아리스토텔레스는 알렉산드로스 대왕을 가르치고 학문을 체계화했다","아리스토텔레스는 독배를 마시고 죽은 아테네의 철학자였다"],
+[3,"히포크라테스는 의학을 미신에서 분리해 과학으로 발전시켰다","히포크라테스는 기하학을 체계화해 『원론』을 썼다"],
+[3,"알렉산드로스 대왕은 페르시아를 정복하고 인도 서북부까지 진출했다","알렉산드로스 대왕은 로마를 정복하고 지중해 서쪽까지 진출했다"],
+[3,"알렉산드로스 대왕이 죽은 뒤 제국은 여러 왕국으로 분열되었다","알렉산드로스 대왕이 죽은 뒤에도 제국은 하나로 오래 유지되었다"],
+[3,"헬레니즘 문화는 그리스 문화와 오리엔트 문화가 융합된 것이다","헬레니즘 문화는 그리스 문화와 로마 문화가 융합된 것이다"],
+[3,"헬레니즘 시기에는 세계 시민주의와 개인주의가 나타났다","헬레니즘 시기에는 폴리스 중심의 공동체 의식이 더 강해졌다"],
+[3,"헬레니즘 시기에 알렉산드리아가 학문과 문화의 중심지로 번성했다","헬레니즘 시기에 알렉산드리아는 학문과 교역이 쇠퇴한 도시였다"],
+[3,"헬레니즘 시기 조각으로는 라오콘 군상과 밀로의 비너스가 있다","헬레니즘 시기 조각으로는 천지 창조와 모나리자가 있다"],
+[3,"헬레니즘 문화는 인도에 전해져 간다라 미술에 영향을 주었다","헬레니즘 문화는 인도에 전해지지 못하고 지중해에서만 퍼졌다"],
+[3,"마케도니아의 필리포스 2세는 폴리스들을 장악해 그리스를 지배했다","마케도니아의 필리포스 2세는 페르시아를 정복해 인도까지 갔다"],
+[4,"로마는 왕정을 무너뜨리고 기원전 509년 공화정을 세웠다","로마는 공화정을 무너뜨리고 기원전 509년 왕정을 세웠다"],
+[4,"집정관은 임기 1년에 2명을 뽑아 서로 견제하게 했다","집정관은 종신직으로 1명을 뽑아 권력을 독점하게 했다"],
+[4,"원로원은 귀족 중심으로 구성되어 공화정의 중요 정책을 이끌었다","원로원은 평민 대표로 구성되어 귀족의 결정을 거부했다"],
+[4,"호민관은 평민을 보호하고 귀족의 결정에 거부권을 행사했다","호민관은 귀족을 대표하고 평민의 요구를 거부했다"],
+[4,"평민의 요구로 12표법이 만들어져 관습법이 문서로 정리되었다","귀족의 요구로 12표법이 만들어져 평민의 권리를 제한했다"],
+[4,"로마는 정복한 지역 사람들에게 시민권을 점차 주어 로마인으로 통합했다","로마는 정복한 지역 사람들을 모두 노예로 삼고 시민권을 주지 않았다"],
+[4,"포에니 전쟁에서 로마가 카르타고를 이기고 지중해 서쪽을 장악했다","포에니 전쟁에서 카르타고가 로마를 이기고 지중해 서쪽을 장악했다"],
+[4,"한니발은 카르타고의 장군으로 알프스를 넘어 로마를 공격했다","한니발은 로마의 장군으로 알프스를 넘어 카르타고를 공격했다"],
+[4,"정복 전쟁 뒤 노예를 쓰는 대농장이 늘어 중소 농민이 몰락했다","정복 전쟁 뒤 노예를 쓰는 대농장이 사라져 중소 농민이 늘었다"],
+[4,"카이사르는 갈리아를 정복하고 종신 독재관이 되었다가 암살당했다","카이사르는 한니발을 물리치고 황제가 되어 암살당하지 않았다"],
+[5,"옥타비아누스는 기원전 27년 원로원에게서 '아우구스투스' 칭호를 받았다","옥타비아누스는 기원전 27년 민회에서 '아우구스투스' 칭호를 받아 왕이 되었다"],
+[5,"아우구스투스는 공화정의 외형을 유지한 채 프린켑스로서 실질적 황제가 되었다","아우구스투스는 공화정을 폐지하고 스스로 왕이라고 선언했다"],
+[5,"로마는 팍스 로마나라 불린 약 200년의 평화와 번영을 누렸다","로마는 팍스 로마나라 불린 약 200년간 내란이 끊이지 않았다"],
+[5,"로마는 지중해 전체를 지배하며 도로망으로 제국을 연결했다","로마는 지중해 전체를 지배했으나 도로 건설에는 관심이 없었다"],
+[5,"크리스트교는 사랑과 평등을 설교한 예수의 가르침에서 시작되었다","크리스트교는 신분 질서와 황제 숭배를 설교한 가르침에서 시작되었다"],
+[5,"크리스트교는 황제 숭배를 거부해 박해를 받았다","크리스트교는 처음부터 황제의 보호를 받았다"],
+[5,"콘스탄티누스 황제는 313년 밀라노 칙령으로 크리스트교를 공인했다","콘스탄티누스 황제는 313년 밀라노 칙령으로 크리스트교를 국교로 삼았다"],
+[5,"테오도시우스 1세는 392년 크리스트교를 국교로 삼았다","테오도시우스 1세는 392년 크리스트교를 공인했다"],
+[5,"콘스탄티누스는 수도를 콘스탄티노폴리스로 옮겼다","콘스탄티누스는 수도를 알렉산드리아로 옮겼다"],
+[5,"395년 로마 제국은 동서로 분열되었다","476년 로마 제국은 동서로 분열되었다"],
+[5,"서로마 제국은 476년 게르만 출신 용병대장에게 멸망했다","서로마 제국은 395년 게르만 출신 용병대장에게 멸망했다"],
+[5,"로마법은 로마 시민에게만 적용되던 시민법에서 제국 모든 사람에게 적용되는 만민법으로 발전했다","로마법은 제국 모든 사람에게 적용되던 만민법에서 로마 시민에게만 적용되는 시민법으로 발전했다"],
+[6,"4세기 말 훈족에게 밀린 게르만족이 로마 영토로 대이동했다","4세기 말 로마에게 밀린 게르만족이 훈족 영토로 이동했다"],
+[6,"프랑크 왕국은 게르만 왕국들 가운데 서유럽에서 가장 강하게 성장했다","동고트 왕국은 게르만 왕국들 가운데 서유럽에서 가장 강하게 성장했다"],
+[6,"클로비스는 크리스트교로 개종해 로마 교회의 지지를 얻었다","클로비스는 크리스트교를 탄압해 로마 교회와 대립했다"],
+[6,"카롤루스 마르텔은 투르·푸아티에 전투에서 이슬람 세력을 막았다","카롤루스 마르텔은 십자군을 이끌고 예루살렘을 되찾았다"],
+[6,"카롤루스 대제는 영토를 크게 넓히고 크리스트교를 전파했다","카롤루스 대제는 비잔티움을 정복하고 동로마 황제가 되었다"],
+[6,"800년 교황이 카롤루스 대제에게 서로마 황제의 관을 주었다","800년 카롤루스 대제가 교황에게 서로마 황제의 관을 주었다"],
+[6,"카롤루스 대관은 서유럽이 비잔티움과 구별되는 독자적 세계가 되는 계기였다","카롤루스 대관은 서유럽이 비잔티움의 지배 아래 편입되는 계기였다"],
+[6,"카롤루스 대제 사후 프랑크 왕국은 베르됭 조약 등으로 세 나라로 나뉘었다","카롤루스 대제 사후 프랑크 왕국은 하나로 더욱 굳게 통합되었다"],
+[6,"오토 1세는 962년 교황에게서 황제의 관을 받아 신성 로마 제국의 기틀을 놓았다","오토 1세는 800년 교황에게서 황제의 관을 받아 신성 로마 제국의 기틀을 놓았다"],
+[6,"서유럽 세계는 크리스트교, 게르만 문화, 로마 문화가 어우러져 형성되었다","서유럽 세계는 이슬람교, 비잔티움 문화, 페르시아 문화가 어우러져 형성되었다"],
+[7,"비잔티움 제국은 동로마 제국의 다른 이름으로 콘스탄티노폴리스를 수도로 삼았다","비잔티움 제국은 서로마 제국의 다른 이름으로 로마를 수도로 삼았다"],
+[7,"비잔티움 제국은 서로마가 멸망한 뒤에도 약 1000년간 이어졌다","비잔티움 제국은 서로마와 함께 476년에 멸망했다"],
+[7,"유스티니아누스 때 지중해 일대를 되찾아 비잔티움이 전성기를 맞았다","유스티니아누스 때 오스만에게 땅을 잃고 비잔티움이 쇠퇴했다"],
+[7,"유스티니아누스는 로마법을 집대성해 후대 유럽 법의 바탕이 되게 했다","유스티니아누스는 12표법을 처음 만들어 로마법의 시작을 열었다"],
+[7,"비잔티움에서는 황제가 정치와 종교를 함께 이끌었다","비잔티움에서는 교황이 정치와 종교를 함께 이끌었다"],
+[7,"비잔티움의 중심 종교는 그리스 정교이다","비잔티움의 중심 종교는 로마 가톨릭이다"],
+[7,"비잔티움 문화는 그리스·로마 문화에 동방 문화가 합쳐지고 크리스트교가 중심이 되었다","비잔티움 문화는 게르만 문화 중심으로 만들어지고 이슬람교가 중심이 되었다"],
+[7,"성 소피아 성당은 비잔티움 양식을 대표하는 건축물이다","성 소피아 성당은 고딕 양식을 대표하는 건축물이다"],
+[7,"비잔티움 제국은 1453년 오스만 제국에 멸망했다","비잔티움 제국은 1453년 십자군에 멸망했다"],
+[7,"1054년 크리스트교는 로마 가톨릭과 그리스 정교로 갈라졌다","1054년 크리스트교는 가톨릭과 개신교로 갈라졌다"],
+[8,"봉건제는 외적의 침입이 잦고 왕권이 약했던 때 등장했다","봉건제는 강력한 왕권으로 중앙 집권이 이루어진 때 등장했다"],
+[8,"봉건제는 주군이 봉토를 주고 봉신이 충성과 군사 봉사로 보답하는 관계였다","봉건제는 영주가 농노에게 땅을 주고 농노가 군사 봉사로 보답하는 관계였다"],
+[8,"봉건제의 계약은 쌍무적이어서 봉신도 주군에게 의무를 요구할 수 있었다","봉건제의 계약은 일방적이어서 봉신은 주군에게 아무것도 요구할 수 없었다"],
+[8,"봉건 사회에서 왕의 직접 통치 범위는 자기 영지로 한정되었다","봉건 사회에서 왕은 모든 영주의 영지를 직접 통치했다"],
+[8,"장원은 영주의 땅에서 농노가 농사를 짓는 경제 단위였다","장원은 왕이 임명한 관리가 시민을 다스리는 정치 단위였다"],
+[8,"농노는 영주의 땅을 경작하며 지대와 노동을 바쳤다","농노는 영주에게 아무것도 바치지 않고 땅을 자유롭게 사고팔았다"],
+[8,"농노는 이동의 자유가 제한되었으나 노예와 달리 가족과 재산을 가질 수 있었다","농노는 노예와 같아서 가족을 이룰 수 없었고 재산도 가질 수 없었다"],
+[8,"장원은 자급자족적이어서 상업이 크게 발달하지 않았다","장원은 대외 무역에 의존해 상업이 크게 발달했다"],
+[8,"기사는 영주에게 충성을 맹세하고 말을 타고 싸우는 전사 계층이었다","기사는 영주의 땅을 경작하며 지대를 바치는 농민 계층이었다"],
+[8,"봉건제는 정치·군사적 관계이고, 장원은 경제적 단위이다","봉건제는 경제적 단위이고, 장원은 정치·군사적 관계이다"],
+[9,"중세 서유럽에서는 크리스트교가 사람들의 삶 전반에 큰 영향을 주었다","중세 서유럽에서는 크리스트교의 영향이 거의 없었다"],
+[9,"교회는 십일조를 거두어 많은 토지와 재산을 가졌다","교회는 토지를 가질 수 없어 재산이 거의 없었다"],
+[9,"수도원은 기도와 노동을 하며 고전과 학문을 보존했다","수도원은 노동을 금지하고 전쟁 훈련만 했다"],
+[9,"카노사의 굴욕은 황제 하인리히 4세가 교황 그레고리우스 7세에게 용서를 빈 사건이다","카노사의 굴욕은 교황 그레고리우스 7세가 황제 하인리히 4세에게 용서를 빈 사건이다"],
+[9,"카노사의 굴욕은 성직자 서임권을 둘러싼 갈등에서 일어났다","카노사의 굴욕은 십자군 원정을 둘러싼 갈등에서 일어났다"],
+[9,"교황권은 13세기 인노켄티우스 3세 때 전성기를 맞았다","교황권은 13세기 인노켄티우스 3세 때 가장 약했다"],
+[9,"십자군 전쟁은 교황 우르바누스 2세의 호소로 시작되었다","십자군 전쟁은 비잔티움 황제의 명령으로 시작되었다"],
+[9,"십자군 전쟁은 성지 예루살렘을 되찾으려는 목적으로 시작되었다","십자군 전쟁은 콘스탄티노폴리스를 정복하려는 목적으로 시작되었다"],
+[9,"십자군은 결국 성지를 되찾는 데 실패했다","십자군은 성지를 되찾아 이슬람 세력을 완전히 몰아냈다"],
+[9,"십자군 실패로 교황권이 약해지고 왕권이 강해졌다","십자군 실패로 교황권이 강해지고 왕권이 약해졌다"],
+[9,"십자군 원정으로 동방과의 교역이 늘고 이탈리아 도시들이 번성했다","십자군 원정으로 동방과의 교류가 끊겨 이탈리아 도시들이 쇠퇴했다"],
+[9,"십자군 전쟁으로 기사와 영주의 힘이 약해졌다","십자군 전쟁으로 기사와 영주의 힘이 강해졌다"],
+[10,"11세기 이후 농업 생산력이 늘고 상업이 살아나 도시가 성장했다","11세기 이후 농업 생산력이 줄고 상업이 사라져 도시가 성장했다"],
+[10,"도시의 상인과 수공업자는 돈을 내고 특허장을 받아 자치권을 얻었다","도시는 영주의 장원에 포함되어 자치권이 전혀 없었다"],
+[10,"길드는 상공업자들의 동업 조합이었다","길드는 농노들이 영주에 맞서 만든 조직이었다"],
+[10,"길드는 가격과 품질을 통제해 경쟁을 제한했다","길드는 가격과 품질을 자유 경쟁에 맡겼다"],
+[10,"농노가 도시에서 일정 기간 살면 자유로워지기도 했다","농노는 도시에 가도 영주가 언제든 되돌릴 수 있었다"],
+[10,"북유럽 도시들은 한자 동맹을 맺어 상업을 보호했다","이탈리아 도시들은 한자 동맹을 맺어 상업을 보호했다"],
+[10,"백년 전쟁은 영국과 프랑스 사이에서 일어났다","백년 전쟁은 영국과 에스파냐 사이에서 일어났다"],
+[10,"백년 전쟁에서 잔 다르크가 프랑스를 구했고 프랑스가 승리했다","백년 전쟁에서 잔 다르크가 영국을 이끌었고 영국이 승리했다"],
+[10,"백년 전쟁 뒤 기사 계급이 몰락하고 왕권이 강해졌다","백년 전쟁 뒤 왕권이 약해지고 기사 계급이 강해졌다"],
+[10,"흑사병으로 유럽 인구가 크게 줄어 노동력이 부족해졌다","흑사병으로 유럽 인구가 크게 늘어 노동력이 남아돌았다"],
+[10,"흑사병 뒤 농노의 처지가 개선되어 농노 해방이 진행되었다","흑사병 뒤 영주가 농노를 더 강하게 묶어 농노제가 강화되었다"],
+[10,"중세 후기 봉건제가 무너지며 왕을 중심으로 한 중앙 집권 국가가 형성되었다","중세 후기 봉건제가 강화되며 왕권이 약해지고 영주의 힘이 커졌다"],
+[11,"르네상스는 '부활'을 뜻하며 고전 문화를 되살리려는 운동이었다","르네상스는 '개혁'을 뜻하며 교회를 바로잡으려는 운동이었다"],
+[11,"르네상스는 14세기 이탈리아에서 시작되었다","르네상스는 14세기 영국에서 시작되었다"],
+[11,"이탈리아는 동방 무역으로 상공업이 발달하고 로마 유산이 많아 르네상스가 먼저 시작되었다","이탈리아는 상공업이 쇠퇴하고 고대 유산이 거의 없어 르네상스가 가장 늦게 시작되었다"],
+[11,"피렌체에서는 메디치 가문이 학자와 예술가를 후원했다","피렌체에서는 메디치 가문이 예술을 억누르고 학자를 추방했다"],
+[11,"인문주의는 신 중심이 아닌 인간 중심으로 사고하려는 정신이다","인문주의는 인간보다 신을 중심으로 사고하려는 정신이다"],
+[11,"르네상스 예술가들은 원근법과 인체 해부학을 활용해 사실적으로 표현했다","르네상스 예술가들은 신의 모습을 평면적이고 상징적으로 그리는 것을 추구했다"],
+[11,"레오나르도 다 빈치는 「모나리자」와 「최후의 만찬」을 그렸다","레오나르도 다 빈치는 「천지 창조」와 「다비드상」을 만들었다"],
+[11,"미켈란젤로는 「천지 창조」와 「다비드상」을 만들었다","미켈란젤로는 「아테네 학당」과 「모나리자」를 그렸다"],
+[11,"라파엘로는 「아테네 학당」과 여러 성모 그림으로 유명하다","라파엘로는 「최후의 만찬」과 「천지 창조」로 유명하다"],
+[11,"단테는 「신곡」을 이탈리아어로 써 자국어 문학을 열었다","단테는 「신곡」을 라틴어로 써 교회 문학을 이어 갔다"],
+[11,"보카치오는 「데카메론」으로 인간의 모습을 생생하게 그렸다","보카치오는 「우신예찬」으로 교회의 타락을 풍자했다"],
+[11,"에라스뮈스는 「우신예찬」으로 교회의 타락을 비판했다","에라스뮈스는 「유토피아」로 사회의 모순을 비판했다"],
+[11,"토머스 모어는 「유토피아」로 당시 사회의 모순을 비판했다","토머스 모어는 「신곡」으로 당시 사회의 모순을 비판했다"],
+[11,"구텐베르크가 활판 인쇄술을 개량해 책이 널리 퍼지고 새 사상이 전파되었다","구텐베르크가 활판 인쇄술을 개량했지만 책이 비싸져 지식은 소수가 독점했다"],
+[11,"코페르니쿠스는 지동설을 주장했다","코페르니쿠스는 천동설을 주장했다"],
+[11,"셰익스피어는 영국에서 「햄릿」 같은 희곡으로 인간의 감정을 그렸다","셰익스피어는 에스파냐에서 「돈키호테」를 써 인간의 감정을 그렸다"],
+[11,"르네상스의 인간 중심 사고는 종교 개혁과 근대 사회의 바탕이 되었다","르네상스의 인간 중심 사고는 봉건제를 강화하는 바탕이 되었다"]
+];
+// [단원, 설명, 정답, 묶음]
+var PAIRS=[
+[0,"티그리스강과 유프라테스강 유역에서 일어나 쐐기 문자를 쓴 문명","메소포타미아 문명","문명"],
+[0,"나일강 유역에서 일어나 피라미드와 미라를 남긴 문명","이집트 문명","문명"],
+[0,"모헨조다로와 하라파 같은 계획도시를 남긴 문명","인더스 문명","문명"],
+[0,"은나라의 갑골 문자가 한자의 기원이 된 문명","황허 문명","문명"],
+[0,"'눈에는 눈, 이에는 이'로 알려진 바빌로니아의 법","함무라비 법전","문서"],
+[4,"평민의 요구로 만들어진 로마 최초의 성문법","12표법","문서"],
+[5,"제국 안의 모든 사람에게 적용된 로마의 법","만민법","문서"],
+[5,"313년 콘스탄티누스가 크리스트교를 공인한 칙령","밀라노 칙령","문서"],
+[7,"유스티니아누스가 로마법을 집대성한 법전","로마법 대전","문서"],
+[1,"페르시아가 수도와 속주를 잇기 위해 닦은 도로","왕의 길","정치"],
+[1,"페르시아가 제국을 나눠 총독을 보내 다스린 행정 구역","속주","정치"],
+[2,"폴리스의 언덕 위에 있던 신전과 성채","아크로폴리스","정치"],
+[2,"폴리스의 광장으로 시민들이 모여 토론하던 곳","아고라","정치"],
+[2,"독재자가 될 위험이 있는 사람의 이름을 적어 투표로 추방한 제도","도편 추방제","정치"],
+[4,"임기 1년에 2명을 뽑아 서로 견제하게 한 로마 최고 관직","집정관","정치"],
+[4,"귀족 중심으로 구성되어 로마 공화정의 중요 정책을 이끈 기구","원로원","정치"],
+[4,"평민을 보호하고 귀족의 결정에 거부권을 행사한 관직","호민관","정치"],
+[5,"'제일 시민'이라는 뜻으로 아우구스투스가 쓴 호칭","프린켑스","정치"],
+[1,"페르시아 제국을 세운 왕","키루스 2세","고대 지도자"],
+[1,"속주제와 왕의 길로 페르시아의 전성기를 이끈 왕","다리우스 1세","고대 지도자"],
+[2,"아테네 민주정의 전성기를 이끈 지도자","페리클레스","고대 지도자"],
+[2,"마케도니아 왕으로 그리스 폴리스를 장악한 알렉산드로스의 아버지","필리포스 2세","고대 지도자"],
+[3,"페르시아를 정복하고 인도 서북부까지 진출한 마케도니아 왕","알렉산드로스 대왕","고대 지도자"],
+[4,"갈리아를 정복하고 종신 독재관에 올랐다가 암살당한 장군","카이사르","고대 지도자"],
+[4,"카르타고의 장군으로 알프스를 넘어 로마를 공격한 인물","한니발","고대 지도자"],
+[5,"로마의 초대 황제로 '존엄한 자'라는 칭호를 받은 인물","아우구스투스","고대 지도자"],
+[5,"313년 크리스트교를 공인하고 수도를 옮긴 황제","콘스탄티누스","고대 지도자"],
+[5,"392년 크리스트교를 국교로 삼은 황제","테오도시우스 1세","고대 지도자"],
+[5,"476년 서로마의 마지막 황제를 폐위시킨 게르만 용병대장","오도아케르","고대 지도자"],
+[7,"지중해 일대를 되찾고 로마법을 집대성한 비잔티움 황제","유스티니아누스","고대 지도자"],
+[6,"크리스트교로 개종해 로마 교회와 손잡은 프랑크 왕","클로비스","중세 지도자"],
+[6,"투르·푸아티에 전투에서 이슬람 세력을 막은 프랑크의 궁재","카롤루스 마르텔","중세 지도자"],
+[6,"800년 교황에게서 서로마 황제의 관을 받은 프랑크 왕","카롤루스 대제","중세 지도자"],
+[6,"962년 교황에게서 황제의 관을 받아 신성 로마 제국의 기틀을 놓은 인물","오토 1세","중세 지도자"],
+[9,"카노사의 굴욕 때 하인리히 4세를 굴복시킨 교황","그레고리우스 7세","중세 지도자"],
+[9,"카노사에서 교황에게 용서를 빈 신성 로마 제국 황제","하인리히 4세","중세 지도자"],
+[9,"클레르몽 공의회에서 십자군을 호소한 교황","우르바누스 2세","중세 지도자"],
+[9,"13세기 교황권의 전성기를 이끈 교황","인노켄티우스 3세","중세 지도자"],
+[10,"백년 전쟁에서 프랑스를 구한 소녀","잔 다르크","중세 지도자"],
+[3,"트로이 전쟁을 노래한 「일리아스」의 작가","호메로스","그리스 학자"],
+[3,"「역사」에서 페르시아 전쟁을 기록한 역사가","헤로도토스","그리스 학자"],
+[3,"펠로폰네소스 전쟁을 기록한 역사가","투키디데스","그리스 학자"],
+[3,"'너 자신을 알라'며 대화로 진리를 찾으려 한 철학자","소크라테스","그리스 학자"],
+[3,"이데아를 주장하고 아카데메이아를 세운 철학자","플라톤","그리스 학자"],
+[3,"알렉산드로스를 가르친 '만학의 아버지'","아리스토텔레스","그리스 학자"],
+[3,"의학을 미신에서 분리해 과학으로 발전시킨 의학자","히포크라테스","그리스 학자"],
+[11,"「모나리자」와 「최후의 만찬」을 그린 예술가","레오나르도 다 빈치","르네상스 인물"],
+[11,"「천지 창조」와 「다비드상」을 만든 예술가","미켈란젤로","르네상스 인물"],
+[11,"「아테네 학당」을 그린 화가","라파엘로","르네상스 인물"],
+[11,"「신곡」을 쓴 이탈리아의 시인","단테","르네상스 인물"],
+[11,"「데카메론」을 쓴 이탈리아의 작가","보카치오","르네상스 인물"],
+[11,"「우신예찬」으로 교회의 타락을 풍자한 학자","에라스뮈스","르네상스 인물"],
+[11,"「유토피아」로 사회의 모순을 비판한 영국의 인문학자","토머스 모어","르네상스 인물"],
+[11,"「햄릿」을 쓴 영국의 극작가","셰익스피어","르네상스 인물"],
+[11,"「돈키호테」를 쓴 에스파냐의 작가","세르반테스","르네상스 인물"],
+[11,"활판 인쇄술을 개량해 책의 보급을 이끈 인물","구텐베르크","르네상스 인물"],
+[11,"지동설을 주장한 천문학자","코페르니쿠스","르네상스 인물"],
+[2,"아테네를 중심으로 한 그리스 폴리스 연합이 페르시아를 물리친 전쟁","페르시아 전쟁","전쟁"],
+[2,"기원전 490년 아테네군이 페르시아군을 물리친 전투","마라톤 전투","전쟁"],
+[2,"아테네 해군이 페르시아 함대를 격파한 해전","살라미스 해전","전쟁"],
+[2,"아테네와 스파르타가 맞서 스파르타 쪽이 승리한 전쟁","펠로폰네소스 전쟁","전쟁"],
+[4,"로마와 카르타고가 싸워 로마가 지중해 서쪽을 장악한 전쟁","포에니 전쟁","전쟁"],
+[6,"732년 프랑크가 이슬람 세력을 물리친 전투","투르·푸아티에 전투","전쟁"],
+[9,"성지 예루살렘을 되찾으려 서유럽이 벌인 원정","십자군 전쟁","전쟁"],
+[10,"영국과 프랑스가 100년 넘게 싸운 전쟁","백년 전쟁","전쟁"],
+[2,"아테네가 이끈 폴리스 동맹","델로스 동맹","조직"],
+[2,"스파르타가 이끈 폴리스 동맹","펠로폰네소스 동맹","조직"],
+[10,"북유럽 도시들이 상업을 보호하려 맺은 동맹","한자 동맹","조직"],
+[10,"상공업자들이 가격과 품질을 통제하려 만든 동업 조합","길드","조직"],
+[9,"기도와 노동을 하며 학문과 고전을 보존한 곳","수도원","조직"],
+[8,"주군이 봉토를 주고 봉신이 충성과 군사 봉사를 하는 정치·군사 관계","봉건제","중세 용어"],
+[8,"영주의 토지에서 농노가 농사를 짓는 경제 단위","장원","중세 용어"],
+[8,"말을 타고 싸우며 영주에게 충성한 전사 계층","기사","중세 용어"],
+[8,"장원에서 지대와 노동을 바치며 이동의 자유가 제한된 농민","농노","중세 용어"],
+[8,"주군에게서 봉토를 받고 충성을 맹세한 가신","봉신","중세 용어"],
+[8,"장원을 소유하고 농노를 지배한 지배층","영주","중세 용어"],
+[9,"소득의 10분의 1을 교회에 바치던 세금","십일조","중세 용어"],
+[9,"서유럽 크리스트교 교회의 최고 지도자","교황","중세 용어"],
+[7,"비잔티움의 종교로 황제의 영향 아래 있던 교회","그리스 정교","중세 용어"],
+[7,"서유럽의 종교로 교황을 중심으로 한 교회","로마 가톨릭","중세 용어"],
+[9,"1077년 황제가 교황에게 용서를 빈 사건","카노사의 굴욕","중세 용어"],
+[10,"14세기 유럽 인구를 크게 줄인 전염병","흑사병","중세 용어"],
+[2,"산과 바다로 나뉜 그리스의 독립적인 도시 국가","폴리스","개념"],
+[3,"그리스 문화와 오리엔트 문화가 융합된 문화","헬레니즘","개념"],
+[3,"민족과 국경을 넘어 모두가 세계의 시민이라는 사상","세계 시민주의","개념"],
+[3,"공동체보다 개인의 삶과 행복을 중시한 헬레니즘 시대의 경향","개인주의","개념"],
+[5,"로마가 약 200년간 누린 평화와 번영","팍스 로마나","개념"],
+[11,"신 중심이 아닌 인간 중심으로 사고하려는 정신","인문주의","개념"],
+[11,"'부활'을 뜻하며 고전 문화를 되살리려 한 운동","르네상스","개념"],
+[9,"신학과 철학을 조화시키려 한 중세의 학문","스콜라 철학","개념"],
+[2,"민주정을 발전시키고 상공업과 문화가 번성한 폴리스","아테네","장소"],
+[2,"소수 시민이 예속민을 지배하며 군사 훈련을 중시한 폴리스","스파르타","장소"],
+[3,"헬레니즘 시대 학문의 중심지가 된 이집트의 도시","알렉산드리아","장소"],
+[5,"콘스탄티누스가 천도한 도시로 뒤에 비잔티움의 수도가 된 곳","콘스탄티노폴리스","장소"],
+[9,"십자군이 되찾으려 한 크리스트교의 성지","예루살렘","장소"],
+[11,"메디치 가문의 후원 아래 르네상스가 꽃핀 도시","피렌체","장소"],
+[3,"아테네 아크로폴리스에 세워진 그리스 건축의 대표작","파르테논 신전","건축"],
+[5,"로마의 대형 원형 경기장","콜로세움","건축"],
+[5,"로마가 도시에 물을 공급하려고 만든 다리 모양의 구조물","수도교","건축"],
+[7,"유스티니아누스 때 지어진 비잔티움 양식의 대표 성당","성 소피아 성당","건축"],
+[10,"뾰족한 탑과 스테인드글라스가 특징인 중세 성당 양식","고딕 양식","건축"],
+[3,"헬레니즘 시기에 만들어진 대표적인 여신 조각","밀로의 비너스","건축"]
+];
+// [연도, 사건, 단원]  (기원전은 음수)
+var EVENTS=[
+[-509,"로마 공화정 성립",4],[-490,"마라톤 전투",2],[-480,"살라미스 해전",2],[-431,"펠로폰네소스 전쟁 시작",2],
+[-336,"알렉산드로스 대왕 즉위",3],[-264,"포에니 전쟁 시작",4],[-44,"카이사르 암살",4],[-27,"아우구스투스 즉위(제정 시작)",5],
+[313,"밀라노 칙령",5],[392,"크리스트교 국교 지정",5],[395,"로마 제국 동서 분열",5],[476,"서로마 제국 멸망",5],
+[732,"투르·푸아티에 전투",6],[800,"카롤루스 대제 대관",6],[843,"베르됭 조약",6],[962,"오토 1세 대관",6],
+[1054,"크리스트교 동서 교회 분리",7],[1077,"카노사의 굴욕",9],[1096,"제1차 십자군 원정",9],
+[1337,"백년 전쟁 시작",10],[1347,"흑사병 유행 시작",10],[1453,"비잔티움 제국 멸망",10]
+];
+
+var LET=["ㄱ","ㄴ","ㄷ","ㄹ"], CIR=["①","②","③","④","⑤"];
+function rnd(n){return Math.floor(Math.random()*n)}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+function wpick(ws){var s=0,i;for(i=0;i<ws.length;i++)s+=ws[i];var r=Math.random()*s;for(i=0;i<ws.length;i++){r-=ws[i];if(r<0)return i}return ws.length-1}
+function yr(y){return y<0?"기원전 "+(-y)+"년":y+"년"}
+function strictLongest(opts,a){var l=opts[a].length;for(var i=0;i<opts.length;i++){if(i!==a&&opts[i].length>=l)return false}return true}
+
+function mkCtx(sel){
+  var items=[],pairs=[],events=[],i;
+  for(i=0;i<ITEMS.length;i++)if(sel[ITEMS[i][0]])items.push(i);
+  for(i=0;i<PAIRS.length;i++)if(sel[PAIRS[i][0]])pairs.push(i);
+  for(i=0;i<EVENTS.length;i++)if(sel[EVENTS[i][2]])events.push(i);
+  return {sel:sel,items:items,pairs:pairs,events:events,seen:{}};
+}
+function sameChapter(i){var out=[];for(var k=0;k<ITEMS.length;k++)if(k!==i&&ITEMS[k][0]===ITEMS[i][0])out.push(k);return out}
+
+function genSingle(neg,lv,ctx){
+  var P=ctx.items; if(!P.length)return null;
+  for(var tr=0;tr<40;tr++){
+    var i=P[rnd(P.length)],cand;
+    if(lv>=3){cand=sameChapter(i)}
+    else{
+      var all=P.filter(function(k){return k!==i});
+      var other=all.filter(function(k){return ITEMS[k][0]!==ITEMS[i][0]});
+      cand=other.length>=4?other:(all.length>=4?all:sameChapter(i));
+    }
+    var d=shuf(cand).slice(0,4);
+    var correct=neg?ITEMS[i][2]:ITEMS[i][1];
+    var opts=[{s:correct,ok:true,k:i}].concat(d.map(function(k){return {s:neg?ITEMS[k][1]:ITEMS[k][2],ok:false,k:k}}));
+    opts=shuf(opts);
+    var texts=opts.map(function(o){return o.s}),a=0;
+    for(var x=0;x<5;x++)if(opts[x].ok)a=x;
+    if(tr<39&&strictLongest(texts,a))continue;
+    var why=[];
+    if(neg){
+      why.push("정답은 "+CIR[a]+"번(틀린 설명)이에요. 옳게 고치면 → "+ITEMS[i][1]);
+      why.push("나머지 보기는 모두 옳은 설명이에요.");
+    }else{
+      why.push("정답은 "+CIR[a]+"번이에요. 나머지는 이렇게 고쳐야 해요.");
+      opts.forEach(function(o,x){if(!o.ok)why.push(CIR[x]+" → 옳게 고치면: "+ITEMS[o.k][1])});
+    }
+    return {stem:neg?"다음 중 옳지 않은 것은?":"다음 중 옳은 것은?",box:[],opts:texts,a:a,why:why,key:(neg?"F":"T")+i,lv:lv};
+  }
+  return null;
+}
+
+function maskStr(m,n){var r=[];for(var i=0;i<n;i++)if(m&(1<<i))r.push(LET[i]);return r.join(", ")}
+function popc(m){var c=0;while(m){c+=m&1;m>>=1}return c}
+function genCombo(n,neg,lv,ctx){
+  var P=ctx.items; if(!P.length)return null;
+  var chs=[];P.forEach(function(k){if(chs.indexOf(ITEMS[k][0])<0)chs.push(ITEMS[k][0])});
+  var picks;
+  if(lv===5&&chs.length>1&&Math.random()<0.35){picks=shuf(P).slice(0,n)}
+  else{
+    var c=chs[rnd(chs.length)];
+    var pc=P.filter(function(k){return ITEMS[k][0]===c});
+    if(pc.length<n)pc=P;
+    picks=shuf(pc).slice(0,n);
+  }
+  var m=1+wpick(n===4?[1,3,3,1]:[2,3,1]);
+  var idx=shuf([0,1,2,3].slice(0,n)).slice(0,m),S=0;
+  idx.forEach(function(x){S|=(1<<x)});
+  var truth=[],texts=[];
+  for(var p=0;p<n;p++){
+    var inS=(S&(1<<p))>0;
+    var isTrue=neg?!inS:inS;
+    truth.push(isTrue);
+    texts.push(isTrue?ITEMS[picks[p]][1]:ITEMS[picks[p]][2]);
+  }
+  var full=(1<<n)-1,set={},list=[];
+  set[S]=1;list.push(S);
+  var tog=shuf([0,1,2,3].slice(0,n));
+  for(var t=0;t<tog.length&&list.length<4;t++){var mm=S^(1<<tog[t]);if(mm!==0&&!set[mm]){set[mm]=1;list.push(mm)}}
+  var guard=0;
+  while(list.length<5&&guard++<200){var r=1+rnd(full);if(!set[r]){set[r]=1;list.push(r)}}
+  list.sort(function(a,b){var pa=popc(a),pb=popc(b);if(pa!==pb)return pa-pb;
+    for(var q=0;q<n;q++){var ba=(a>>q)&1,bb=(b>>q)&1;if(ba!==bb)return bb-ba}return 0});
+  var a=list.indexOf(S);
+  var box=texts.map(function(s,q){return LET[q]+". "+s});
+  var why=["정답은 "+CIR[a]+"번("+maskStr(S,n)+")이에요."];
+  for(var q2=0;q2<n;q2++){
+    var good=neg?!truth[q2]:truth[q2];
+    if(truth[q2]){why.push(LET[q2]+" 옳은 설명이에요.")}
+    else{why.push(LET[q2]+" 틀린 설명이에요 → 옳게 고치면: "+ITEMS[picks[q2]][1])}
+  }
+  return {stem:neg?"다음 설명 중 옳지 않은 것만을 있는 대로 고른 것은?":"다음 설명 중 옳은 것만을 있는 대로 고른 것은?",
+    box:box,opts:list.map(function(x){return maskStr(x,n)}),a:a,why:why,
+    key:"C"+(neg?"n":"p")+picks.slice().sort().join(",")+"|"+truth.join(""),lv:lv};
+}
+
+function genSeq(n,first,lv,ctx){
+  var E=ctx.events.slice().sort(function(a,b){return EVENTS[a][0]-EVENTS[b][0]});
+  if(E.length<(first?5:n))return null;
+  var pick;
+  if(first){pick=shuf(E).slice(0,5)}
+  else if(lv>=4&&E.length>=n+3){var s=rnd(E.length-(n+3)+1);pick=shuf(E.slice(s,s+n+3)).slice(0,n)}
+  else pick=shuf(E).slice(0,n);
+  var years=pick.map(function(k){return EVENTS[k][0]});
+  if(first){
+    var ord=shuf(pick),a=0,min=1e9;
+    ord.forEach(function(k,x){if(EVENTS[k][0]<min){min=EVENTS[k][0];a=x}});
+    var why=["정답은 "+CIR[a]+"번이에요. 연도를 보면:"];
+    pick.slice().sort(function(x,y){return EVENTS[x][0]-EVENTS[y][0]}).forEach(function(k){why.push(EVENTS[k][1]+" — "+yr(EVENTS[k][0]))});
+    return {stem:"다음 중 가장 먼저 일어난 일은?",box:[],opts:ord.map(function(k){return EVENTS[k][1]}),a:a,why:why,key:"S"+pick.slice().sort().join(","),lv:lv};
+  }
+  var shown=shuf(pick);
+  var correct=pick.slice().sort(function(x,y){return EVENTS[x][0]-EVENTS[y][0]}).map(function(k){return LET[shown.indexOf(k)]});
+  var cs=correct.join(" → "),set={},list=[cs];set[cs]=1;
+  var guard=0;
+  while(list.length<5&&guard++<300){
+    var perm=correct.slice();
+    if(Math.random()<0.6){var i=rnd(n-1),t=perm[i];perm[i]=perm[i+1];perm[i+1]=t}else perm=shuf(perm);
+    var s2=perm.join(" → ");if(!set[s2]){set[s2]=1;list.push(s2)}
+  }
+  list.sort();
+  var a2=list.indexOf(cs);
+  var why2=["정답은 "+CIR[a2]+"번이에요. 연도 순서:"];
+  pick.slice().sort(function(x,y){return EVENTS[x][0]-EVENTS[y][0]}).forEach(function(k){why2.push(LET[shown.indexOf(k)]+". "+EVENTS[k][1]+" — "+yr(EVENTS[k][0]))});
+  return {stem:"다음 사건을 일어난 순서대로 바르게 나열한 것은?",box:shown.map(function(k,x){return LET[x]+". "+EVENTS[k][1]}),opts:list,a:a2,why:why2,key:"Q"+pick.slice().sort().join(","),lv:lv};
+}
+
+function genPair(lv,ctx){
+  var P=ctx.pairs; if(!P.length)return null;
+  var p=P[rnd(P.length)],g=PAIRS[p][3];
+  var others=[];
+  for(var k=0;k<PAIRS.length;k++)if(k!==p&&PAIRS[k][2]!==PAIRS[p][2])others.push(k);
+  var cand=lv===1?others.filter(function(k){return PAIRS[k][3]!==g}):others.filter(function(k){return PAIRS[k][3]===g});
+  if(cand.length<4){var pad=shuf(others.filter(function(k){return cand.indexOf(k)<0}));cand=cand.concat(pad)}
+  var d=shuf(cand).slice(0,4);
+  var opts=shuf([p].concat(d));
+  var a=opts.indexOf(p);
+  var why=["정답은 "+CIR[a]+" "+PAIRS[p][2]+"이에요. "+PAIRS[p][1]+"."];
+  opts.forEach(function(k,x){if(k!==p)why.push(CIR[x]+" "+PAIRS[k][2]+" = "+PAIRS[k][1])});
+  return {stem:"다음 설명에 해당하는 것은?",box:[PAIRS[p][1]],opts:opts.map(function(k){return PAIRS[k][2]}),a:a,why:why,key:"P"+p,lv:lv};
+}
+
+var MIX={
+ 1:[["pair",7],["true",3]],
+ 2:[["pair",5],["true",3],["false",2]],
+ 3:[["pair",2],["true",3],["false",3],["first",1],["c3",1]],
+ 4:[["c4",4],["c4n",1.5],["seq3",1.5],["true",1.5],["false",1],["pair",0.5]],
+ 5:[["c4",5],["c4n",2],["seq4",1.5],["seq3",0.5],["false",1],["pair",0.5]]
+};
+function make(lv,ctx,type){
+  switch(type){
+    case "pair":return genPair(lv,ctx);
+    case "true":return genSingle(false,lv,ctx);
+    case "false":return genSingle(true,lv,ctx);
+    case "first":return genSeq(5,true,lv,ctx);
+    case "seq3":return genSeq(3,false,lv,ctx);
+    case "seq4":return genSeq(4,false,lv,ctx);
+    case "c3":return genCombo(3,false,lv,ctx);
+    case "c4":return genCombo(4,false,lv,ctx);
+    case "c4n":return genCombo(4,true,lv,ctx);
+  }
+}
+function genOne(lv0,ctx){
+  var q=null,best=null;
+  for(var tr=0;tr<30;tr++){
+    var lv=lv0===0?1+rnd(5):lv0;
+    var mix=MIX[lv],type=mix[wpick(mix.map(function(m){return m[1]}))][0];
+    q=make(lv,ctx,type)||genSingle(false,lv,ctx)||genPair(lv,ctx);
+    if(!q)return null;
+    if(!ctx.seen[q.key]){best=q;break}
+    if(!best)best=q;
+  }
+  q=best;ctx.seen[q.key]=1;return q;
+}
+if(false&&typeof module!=="undefined")module.exports={genOne:genOne,mkCtx:mkCtx,ITEMS:ITEMS,PAIRS:PAIRS,EVENTS:EVENTS,CH:CH};
+
+var LVN=["랜덤","개념","기본","고난도","심화","최상급"];
+var LVD=["문제마다 난이도가 섞여서 나와요.","용어·인물의 뜻을 묻는 쉬운 문제. 보기들이 서로 많이 달라요.","같은 종류끼리 헷갈리게 섞은 보기. 용어와 사실 확인.","옳은 것/옳지 않은 것 고르기. 같은 단원의 비슷한 보기들이에요.","ㄱㄴㄷㄹ 조합 문제와 사건 순서 배열이 나와요.","헷갈리는 쌍을 섞은 ㄱㄴㄷㄹ, 사건 4개 순서 배열 등 시험 고난도 수준."];
+var ST={lv:2,n:20,sel:CH.map(function(){return true}),qs:[],ans:[],ctx:null};
+var $=function(id){return document.getElementById(id)};
+try{var sv=JSON.parse(localStorage.getItem("seoyang-gen-v1")||"null");if(sv){ST.lv=sv.lv;ST.n=sv.n;if(sv.sel&&sv.sel.length===CH.length)ST.sel=sv.sel}}catch(e){}
+function save(){try{localStorage.setItem("seoyang-gen-v1",JSON.stringify({lv:ST.lv,n:ST.n,sel:ST.sel}))}catch(e){}}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function drawSet(){
+  var seg=$("seg");seg.innerHTML="";
+  [1,2,3,4,5,0].forEach(function(l){var b=el("button","sg"+(ST.lv===l?" on":""),LVN[l]);b.onclick=function(){ST.lv=l;save();drawSet()};seg.appendChild(b)});
+  $("desc").textContent=LVD[ST.lv];
+  var ch=$("chips");ch.innerHTML="";
+  CH.forEach(function(nm,i){var b=el("button","chip"+(ST.sel[i]?" on":""),(i+1)+". "+nm);b.onclick=function(){ST.sel[i]=!ST.sel[i];save();drawSet()};ch.appendChild(b)});
+  $("n").value=ST.n;
+  var c=ST.sel.filter(Boolean).length;
+  $("sumry").textContent=LVN[ST.lv]+" · "+ST.n+"문제 · "+(c===CH.length?"전체 범위":c+"개 단원");
+}
+document.querySelectorAll(".qn").forEach(function(b){b.onclick=function(){ST.n=+b.dataset.n;save();drawSet()}});
+$("n").oninput=function(){var v=parseInt($("n").value,10);if(v>0){ST.n=Math.min(200,v);save()}};
+document.querySelectorAll(".pre").forEach(function(b){b.onclick=function(){
+  var p=b.dataset.p;ST.sel=CH.map(function(_,i){return p==="all"?true:p==="none"?false:p==="gr"?(i>=2&&i<=5):p==="mid"?(i>=6&&i<=10):i===11});
+  save();drawSet()}});
+function readN(){var v=parseInt($("n").value,10);if(!(v>0))v=20;v=Math.min(200,v);ST.n=v;save();return v}
+function gen(append){
+  var n=readN();
+  if(!ST.sel.some(Boolean)){$("msg").textContent="범위를 하나 이상 골라 주세요.";return}
+  $("msg").textContent="";
+  if(!append||!ST.ctx||ST.ctx.sel.join()!==ST.sel.join()){ST.ctx=mkCtx(ST.sel.slice());if(!append){ST.qs=[];ST.ans=[]}}
+  for(var i=0;i<n;i++){var q=genOne(ST.lv,ST.ctx);if(q){ST.qs.push(q);ST.ans.push(null)}}
+  startView();
+}
+function startView(){
+  $("quiz").style.display="block";$("set").open=false;$("more").style.display="block";
+  drawSet();render();$("quiz").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function render(){
+  var L=$("list");L.innerHTML="";
+  ST.qs.forEach(function(q,i){
+    var c=el("div","q");c.id="q"+i;
+    var h=el("div","qh");h.appendChild(el("span",null,"문제 "+(i+1)));h.appendChild(el("span","badge",LVN[q.lv]));c.appendChild(h);
+    c.appendChild(el("p","stem",q.stem));
+    if(q.box.length){var b=el("div","box");q.box.forEach(function(t){b.appendChild(el("div",null,t))});c.appendChild(b)}
+    var bs=[];
+    q.opts.forEach(function(o,k){var b=el("button","opt",CIR[k]+" "+o);b.onclick=function(){pick(i,k)};c.appendChild(b);bs.push(b)});
+    var w=el("div","why");c.appendChild(w);
+    L.appendChild(c);
+    if(ST.ans[i]!=null)paint(i);
+  });
+  upd();
+}
+function pick(i,k){if(ST.ans[i]!=null)return;ST.ans[i]=k;paint(i);upd()}
+function paint(i){
+  var q=ST.qs[i],k=ST.ans[i],c=$("q"+i),bs=c.querySelectorAll(".opt"),w=c.querySelector(".why");
+  bs.forEach(function(b,x){b.disabled=true;if(x===q.a)b.classList.add("ok");else if(x===k)b.classList.add("bad")});
+  w.innerHTML="";var good=k===q.a;
+  w.appendChild(el("p","h "+(good?"ok":"bad"),good?"정답이에요!":"틀렸어요. 내 답 "+CIR[k]+" → 정답 "+CIR[q.a]));
+  q.why.forEach(function(t){w.appendChild(el("p",null,t))});
+  w.classList.add("show");
+}
+function stat(){var d=0,o=0;ST.qs.forEach(function(q,i){if(ST.ans[i]!=null){d++;if(ST.ans[i]===q.a)o++}});return {d:d,o:o,n:ST.qs.length}}
+function upd(){
+  var s=stat();$("b1").textContent="푼 문제 "+s.d+"/"+s.n;$("b2").textContent="정답 "+s.o;$("pg").style.width=(s.n?s.d/s.n*100:0)+"%";
+  $("sumt").textContent=s.d===s.n&&s.n?("결과: "+s.n+"문제 중 "+s.o+"개 정답 ("+Math.round(s.o/s.n*100)+"%)"):("지금까지 "+s.d+"문제 중 "+s.o+"개 정답");
+  $("rw").style.display=(s.d-s.o>0)?"":"none";
+}
+function buildText(){
+  var s=stat(),t=[];
+  t.push("[서양사 문제 뽑기 결과] 난이도 "+LVN[ST.lv]+" · 푼 "+s.d+"문제 중 정답 "+s.o+"개 (총 "+s.n+"문제)");
+  var sc=[];ST.sel.forEach(function(v,i){if(v)sc.push(CH[i])});t.push("범위: "+(sc.length===CH.length?"전체":sc.join(", ")));
+  t.push("");t.push("[틀린 문제]");
+  var w=0;
+  ST.qs.forEach(function(q,i){
+    var k=ST.ans[i];if(k==null||k===q.a)return;w++;
+    t.push(""+(i+1)+"번 ("+LVN[q.lv]+") "+q.stem);
+    q.box.forEach(function(b){t.push("  "+b)});
+    q.opts.forEach(function(o,x){t.push("  "+CIR[x]+" "+o)});
+    t.push("  내 답 "+CIR[k]+" / 정답 "+CIR[q.a]);
+    q.why.forEach(function(x){t.push("  · "+x)});
+    t.push("");
+  });
+  if(!w)t.push("없음");
+  var un=[];ST.qs.forEach(function(q,i){if(ST.ans[i]==null)un.push(i+1)});
+  if(un.length)t.push("[안 푼 문제] "+un.join(", ")+"번");
+  return t.join("\n");
+}
+$("cp").onclick=function(){
+  var t=buildText(),o=$("out"),cm=$("cm");$("outbox").style.display="block";o.value=t;
+  function fb(){o.focus();o.select();cm.textContent="복사가 안 되면 선택된 글을 길게 눌러 직접 복사해 주세요."}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){cm.textContent="복사됐어요. 채팅에 붙여넣어 주세요."},fb)}else fb();
+};
+$("rw").onclick=function(){
+  var nq=[];ST.qs.forEach(function(q,i){if(ST.ans[i]!=null&&ST.ans[i]!==q.a)nq.push(q)});
+  if(!nq.length)return;ST.qs=nq;ST.ans=nq.map(function(){return null});ST.ctx=null;render();window.scrollTo({top:0,behavior:"smooth"});
+};
+$("go").onclick=function(){gen(false)};
+$("more").onclick=function(){gen(true)};
+$("more2").onclick=function(){gen(true)};
+drawSet();
+</script>
+
+</html>
